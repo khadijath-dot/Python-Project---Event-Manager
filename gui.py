@@ -28,6 +28,8 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.label_welcome.setFont(font)
         self.label_welcome.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
+        self.label_welcome.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.label_welcome.setIndent(-1)
         self.label_welcome.setObjectName("label_welcome")
         self.label_instructions = QtWidgets.QLabel(parent=self.page_welcome)
         self.label_instructions.setGeometry(QtCore.QRect(280, 130, 281, 71))
@@ -75,7 +77,8 @@ class Ui_MainWindow(object):
         self.button_submit.setGeometry(QtCore.QRect(660, 430, 91, 31))
         self.button_submit.setObjectName("button_submit")
         self.label_status = QtWidgets.QLabel(parent=self.page_form)
-        self.label_status.setGeometry(QtCore.QRect(680, 380, 49, 16))
+        self.label_status.setGeometry(QtCore.QRect(250, 440, 191, 41))
+        self.label_status.setText("")
         self.label_status.setObjectName("label_status")
         self.stackedWidget.addWidget(self.page_form)
         self.gridLayout.addWidget(self.stackedWidget, 0, 1, 1, 1)
@@ -89,14 +92,14 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_welcome.setText(_translate("MainWindow", "WELCOME!"))
-        self.label_instructions.setText(_translate("MainWindow", "Welcome to the Ball Dinner celebrating the 10th anniversary of GoodFoods, Inc. Please select \"Start Registration\" below to register."))
+        self.label_instructions.setText(_translate("MainWindow", "Welcome to the special dinner celebrating the 10th anniversary of GoodFoods, Inc. Please select \"Start Registration\" below to register."))
         self.button_start.setText(_translate("MainWindow", "Start Registration"))
         self.label_name.setText(_translate("MainWindow", "Name"))
         self.label_email.setText(_translate("MainWindow", "Email"))
@@ -107,7 +110,6 @@ class Ui_MainWindow(object):
         self.combo_ticket.setItemText(3, _translate("MainWindow", "Speaker"))
         self.label_vipcode.setText(_translate("MainWindow", "Enter VIP code"))
         self.button_submit.setText(_translate("MainWindow", "Submit"))
-        self.label_status.setText(_translate("MainWindow", "Status"))
 
 
 if __name__ == "__main__":
