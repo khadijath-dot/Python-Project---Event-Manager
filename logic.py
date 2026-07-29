@@ -77,14 +77,17 @@ class Logic(QMainWindow, Ui_MainWindow):
         if not name.replace(" ", "").isalpha():
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Error: Name must contain letters only!")
-
-        if not phone.isdigit():
-            self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Phone number must contain digits only!")
+            return
 
         if "@" not in email or "." not in email:
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Please enter a valid email address.")
+            return
+
+        if not phone.isdigit():
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Phone number must contain digits only!")
+            return
         
         if ticket == "Select your ticket":
             self.label_status.setStyleSheet("color: red")
@@ -95,5 +98,28 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Error: Invalid VIP Passcode!")
             return
+
+        if ticket == "VIP":
+            attendee = VIPAttendee(name, email, ticket, vip_code)
+        else:
+            attendee = Attendee(name, email, phone, ticket)
+
+
+        try:
+            with open("records.csv", mode = "a", newline = "") as file:
+                writer = csv.writer(file)
+                writer.writerow(attendee.to_csv_row)
+
+            self.label_status.setStyleSheet("color: green")
+            self.label_status.setText("Registration Successful!")
+
+            self.input_name.clear()
+            self.input_email.clear()
+            self.input_phone.clear()
+            self.input_vip.clear()
+            self.combo_ticket.setCurrentIndex(0)
+        except Exception:
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Could not save registration")
 
              
