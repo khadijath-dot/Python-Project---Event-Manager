@@ -3,6 +3,38 @@ from PyQt6.QtWidgets import QMainWindow, QMessageBox, QApplication
 from gui import Ui_MainWindow
 
 
+class Attendee:
+
+    def __init__(self, name: str, email: str, phone: str, ticket: str) -> None:
+        self.__name = name
+        self.__email = email
+        self.__phone = phone
+        self.__ticket = ticket
+
+    def get_name(self) -> str:
+        return self.__name
+
+    def get_email(self) -> str:
+        return self.__email
+
+    def get_phone(self) -> str:
+        return self.__phone
+
+    def get_ticket(self) -> str:
+        return self.__ticket
+
+    def to_csv(self) -> list[str]:
+        return [self.__name, self.__email, self.__phone, self.__ticket, "N/A"]
+
+
+class VIPAttendee(Attendee):
+
+    def __init__(self, name: str, email: str, phone: str, ticket: str, vip_code: str) -> None:
+        super().__init__(name, email, phone, ticket)
+        self.__vip_code = vip_code
+
+
+
 class Logic(QMainWindow, Ui_MainWindow):
 
     def __init__(self) -> None:
@@ -12,17 +44,40 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(0) #Makes sure the welcome page is visible first
         self.input_vip.setEnabled(False) #Disables the VIP input box (grays out)
         self.button_start.clicked.connect(self.page_switch)
-        self.combo_ticket.currentIndexChanged.connect(self.ticket_select)
+        self.combo_ticket.currentIndexChanged.connect(self.vip_select)
         self.button_submit.clicked.connect(self.submit)
 
     def page_switch(self):
         self.stackedWidget.setCurrentIndex(1)
 
-    def ticket_select(self):
+    def vip_select(self) -> None:
         selected_ticket = self.combo_ticket.currentText()
         if selected_ticket == "VIP":
             self.input_vip.setEnabled(True)
         else:
            self.input_vip.setEnabled(False)
-        self.input_vip.clear() 
-    
+           self.input_vip.clear() 
+
+    def submit(self) -> None:
+        name = self.input_name.text().strip()
+        email = self.input_email.text().strip()
+        phone = self.input_phone.text().strip()
+        vip_code = self.input_vip.text().strip()
+        ticket = self.combo_ticket.currentText()
+
+        if not name or not email or not phone:
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: All fields are required!")
+            return
+        
+        if ticket == "Select your ticket":
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Must select a ticket!")
+            return
+
+        if ticket == "VIP" and vip_code != "VIP2026":
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Invalid VIP Passcode!")
+            return
+
+             
