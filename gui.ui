@@ -18,7 +18,7 @@
     <item row="0" column="1">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_welcome">
        <widget class="QLabel" name="label_welcome">
@@ -228,6 +228,11 @@
           <width>241</width>
           <height>41</height>
          </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
          <string/>

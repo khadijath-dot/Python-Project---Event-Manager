@@ -80,6 +80,9 @@ class Ui_MainWindow(object):
         self.button_submit.setObjectName("button_submit")
         self.label_status = QtWidgets.QLabel(parent=self.page_form)
         self.label_status.setGeometry(QtCore.QRect(250, 440, 241, 41))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_status.setFont(font)
         self.label_status.setText("")
         self.label_status.setObjectName("label_status")
         self.stackedWidget.addWidget(self.page_form)
@@ -94,7 +97,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

@@ -23,7 +23,7 @@ class Attendee:
     def get_ticket(self) -> str:
         return self.__ticket
 
-    def to_csv(self) -> list[str]:
+    def to_csv_row(self) -> list[str]:
         return [self.__name, self.__email, self.__phone, self.__ticket, "N/A"]
 
 
@@ -33,6 +33,10 @@ class VIPAttendee(Attendee):
         super().__init__(name, email, phone, ticket)
         self.__vip_code = vip_code
 
+    def to_csv_row(self) -> list[str]:
+        base_row = super().to_csv_row()
+        base_row[4] = self.__vip_code
+        return base_row
 
 
 class Logic(QMainWindow, Ui_MainWindow):
@@ -69,6 +73,18 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Error: All fields are required!")
             return
+
+        if not name.replace(" ", "").isalpha():
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Name must contain letters only!")
+
+        if not phone.isdigit():
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Phone number must contain digits only!")
+
+        if "@" not in email or "." not in email:
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Please enter a valid email address.")
         
         if ticket == "Select your ticket":
             self.label_status.setStyleSheet("color: red")
