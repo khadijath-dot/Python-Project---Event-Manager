@@ -99,6 +99,11 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_status.setText("Error: Invalid VIP Passcode!")
             return
 
+        if self.duplicate_phone_check(phone):
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Error: Guest with this phone number is already registered!")
+            return
+
         if ticket == "VIP":
             attendee = VIPAttendee(name, email, ticket, vip_code)
         else:
@@ -121,5 +126,19 @@ class Logic(QMainWindow, Ui_MainWindow):
         except Exception:
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Error: Could not save registration")
+
+
+    def duplicate_phone_check(self, phone: str) -> bool:
+        try:
+            with open("records.csv", mode = "r", newline = "") as file:
+                reader = csv.reader(file)
+                for row in reader:
+                    if row and len(row) > 2 and row[2] == phone:
+                        return True
+        except FileNotFoundError:
+            return False
+        return False
+
+
 
              
