@@ -110,6 +110,7 @@ class Ui_MainWindow(object):
         self.label_welcome.setText(_translate("MainWindow", "WELCOME!"))
         self.label_instructions.setText(_translate("MainWindow", "Welcome to the special dinner celebrating the 10th anniversary of GoodFoods, Inc! Please select \"Start Registration\" below to register."))
         self.button_start.setText(_translate("MainWindow", "Start Registration"))
+        self.input_phone.setPlaceholderText(_translate("MainWindow", "e.g., 1234567890"))
         self.label_name.setText(_translate("MainWindow", "Name"))
         self.label_email.setText(_translate("MainWindow", "Email"))
         self.label_phone.setText(_translate("MainWindow", "Phone"))

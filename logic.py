@@ -72,7 +72,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.stackedWidget.setCurrentIndex(0) #Makes sure the welcome page is visible first
-        self.input_code.setEnabled(True) #Disables the VIP input box (grays out)
+        #self.input_code.setEnabled(True) #Disables the VIP input box (grays out)
         self.button_start.clicked.connect(self.page_switch)
         self.combo_ticket.currentIndexChanged.connect(self.code)
         self.button_submit.clicked.connect(self.submit)
@@ -160,7 +160,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         try:
             with open("records.csv", mode = "a", newline = "") as file:
                 writer = csv.writer(file)
-                writer.writerow(attendee.to_csv_row)
+                writer.writerow(attendee.to_csv_row())
 
             self.label_status.setStyleSheet("color: green")
             self.label_status.setText("Registration Successful!")
@@ -168,7 +168,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.input_name.clear()
             self.input_email.clear()
             self.input_phone.clear()
-            self.input_vip.clear()
+            self.input_code.clear()
             self.combo_ticket.setCurrentIndex(0)
         except Exception:
             self.label_status.setStyleSheet("color: red")

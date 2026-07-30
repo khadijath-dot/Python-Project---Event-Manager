@@ -122,6 +122,9 @@
           <height>21</height>
          </rect>
         </property>
+        <property name="placeholderText">
+         <string>e.g., 1234567890</string>
+        </property>
        </widget>
        <widget class="QLineEdit" name="input_email">
         <property name="geometry">
