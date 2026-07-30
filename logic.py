@@ -33,10 +33,36 @@ class VIPAttendee(Attendee):
         super().__init__(name, email, phone, ticket)
         self.__vip_code = vip_code
 
+    def get_vip_code(self) -> str:
+        return self.__vip_code
+
     def to_csv_row(self) -> list[str]:
-        base_row = super().to_csv_row()
-        base_row[4] = self.__vip_code
-        return base_row
+        return [
+            self.get_name(),
+            self.get_email(),
+            self.get_phone(),
+            self.get_ticket(),
+            f"VIP (Code: {self.__vip_code})"
+        ]
+
+class Speaker(Attendee):
+
+    def __init__(self, name: str, email: str, phone: str, ticket: str, speaker_code: str) -> None:
+        super().__init__(name, email, phone, ticket)
+        self.__speaker_code = speaker_code
+
+    def get_topic(self) -> str:
+        return self.__speaker_code
+
+    def to_csv_row(self) -> list[str]:
+        return [
+            self.get_name(),
+            self.get_email(),
+            self.get_phone(),
+            self.get_ticket(),
+            f"Speaker (Code: {self.__speaker_code})"
+            ]
+        
 
 
 class Logic(QMainWindow, Ui_MainWindow):
@@ -48,35 +74,45 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentIndex(0) #Makes sure the welcome page is visible first
         self.input_vip.setEnabled(False) #Disables the VIP input box (grays out)
         self.button_start.clicked.connect(self.page_switch)
-        self.combo_ticket.currentIndexChanged.connect(self.vip_select)
+        self.combo_ticket.currentIndexChanged.connect(self.code)
         self.button_submit.clicked.connect(self.submit)
+        self.code()
 
     def page_switch(self):
         self.stackedWidget.setCurrentIndex(1)
 
-    def vip_select(self) -> None:
+
+    def code(self) -> None:
         selected_ticket = self.combo_ticket.currentText()
         if selected_ticket == "VIP":
-            self.input_vip.setEnabled(True)
+            self.label_code.setText("Enter VIP Code")
+            self.label_code.setVisible(True)
+            self.input_code.setVisible(True)
+        elif selected_ticket == "Speaker":
+            self.label_code.setText("Enter Speaker Code")
+            self.label_code.setVisible(True)
+            self.input_code.setVisible(True)
         else:
-           self.input_vip.setEnabled(False)
-           self.input_vip.clear() 
+           self.label_code.setVisible(False)
+           self.input_code.setVisible(False)
+           self.input_code.clear() 
+
 
     def submit(self) -> None:
         name = self.input_name.text().strip()
         email = self.input_email.text().strip()
         phone = self.input_phone.text().strip()
-        vip_code = self.input_vip.text().strip()
+        code = self.input_code.text().strip()
         ticket = self.combo_ticket.currentText()
 
         if not name or not email or not phone:
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: All fields are required!")
+            self.label_status.setText("All fields are required!")
             return
 
         if not name.replace(" ", "").isalpha():
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Name must contain letters only!")
+            self.label_status.setText("Name must contain letters only.")
             return
 
         if "@" not in email or "." not in email:
@@ -86,29 +122,34 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         if not phone.isdigit():
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Phone number must contain digits only!")
+            self.label_status.setText("Phone number must contain digits only!")
             return
         
         if ticket == "Select your ticket":
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Must select a ticket!")
+            self.label_status.setText("Must select a ticket!")
             return
 
-        if ticket == "VIP" and vip_code != "VIP2026":
+        if ticket == "VIP" and code != "VIP2026":
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Invalid VIP Passcode!")
+            self.label_status.setText("Invalid VIP Passcode!")
             return
 
-        if self.duplicate_phone_check(phone):
+        if ticket == "Speaker" and code != "SPEAKER2026":
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Error: Guest with this phone number is already registered!")
+            self.label_status.setText("Invalid Speaker Passcode!")
+
+        if self.saved_phones(phone):
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Guest with this phone number is already registered!")
             return
 
         if ticket == "VIP":
-            attendee = VIPAttendee(name, email, ticket, vip_code)
+            attendee = VIPAttendee(name, email, phone, ticket, code)
+        elif ticket == "Speaker":
+            attendee = Speaker(name, email, phone, ticket, code)
         else:
             attendee = Attendee(name, email, phone, ticket)
-
 
         try:
             with open("records.csv", mode = "a", newline = "") as file:
@@ -128,7 +169,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_status.setText("Error: Could not save registration")
 
 
-    def duplicate_phone_check(self, phone: str) -> bool:
+    def saved_phones(self, phone: str) -> bool:
         try:
             with open("records.csv", mode = "r", newline = "") as file:
                 reader = csv.reader(file)
