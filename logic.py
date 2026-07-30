@@ -72,10 +72,16 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.stackedWidget.setCurrentIndex(0) #Makes sure the welcome page is visible first
-        self.input_vip.setEnabled(False) #Disables the VIP input box (grays out)
+        self.input_code.setEnabled(True) #Disables the VIP input box (grays out)
         self.button_start.clicked.connect(self.page_switch)
         self.combo_ticket.currentIndexChanged.connect(self.code)
         self.button_submit.clicked.connect(self.submit)
+
+        self.input_name.editingFinished.connect(lambda: self.input_name.setCursorPosition(0))
+        self.input_email.editingFinished.connect(lambda: self.input_email.setCursorPosition(0))
+        self.input_phone.editingFinished.connect(lambda: self.input_phone.setCursorPosition(0))
+        self.input_code.editingFinished.connect(lambda: self.input_code.setCursorPosition(0))
+
         self.code()
 
     def page_switch(self):
@@ -179,7 +185,3 @@ class Logic(QMainWindow, Ui_MainWindow):
         except FileNotFoundError:
             return False
         return False
-
-
-
-             
