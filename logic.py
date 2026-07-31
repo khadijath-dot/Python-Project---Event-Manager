@@ -1,5 +1,5 @@
 import csv
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from gui import Ui_MainWindow
 
 
@@ -153,7 +153,8 @@ class Logic(QMainWindow, Ui_MainWindow):
         # Retrieves and cleans up inputs
         name = self.input_name.text().strip()
         email = self.input_email.text().strip()
-        phone = self.input_phone.text().strip()
+        # Strips away whitespace and common phone formatting characters (dashes, spaces, parentheses)
+        phone = self.input_phone.text().strip().replace("-", "").replace(" ", "").replace(")", "")
         code = self.input_code.text().strip()
         ticket = self.combo_ticket.currentText()
 
@@ -176,7 +177,7 @@ class Logic(QMainWindow, Ui_MainWindow):
             return
         
         # 4. Validates phone number input (digits only)
-        if not phone.isdigit():
+        if not phone.isdigit() or len(phone) != 10:
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Phone number must contain numbers only!")
             return
