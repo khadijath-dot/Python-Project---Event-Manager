@@ -1,6 +1,8 @@
 from logic import *
 
-def main():
+def main() -> None:
+    '''Initializes and run the Event Guest Manager GUI application'''
+    
     application = QApplication([])
     window = Logic()
     window.show()
