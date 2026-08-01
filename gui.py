@@ -83,9 +83,9 @@ class Ui_MainWindow(object):
         self.button_submit.setGeometry(QtCore.QRect(510, 300, 91, 31))
         self.button_submit.setObjectName("button_submit")
         self.label_status = QtWidgets.QLabel(parent=self.page_form)
-        self.label_status.setGeometry(QtCore.QRect(210, 300, 241, 41))
+        self.label_status.setGeometry(QtCore.QRect(160, 300, 281, 41))
         font = QtGui.QFont()
-        font.setPointSize(11)
+        font.setPointSize(10)
         self.label_status.setFont(font)
         self.label_status.setText("")
         self.label_status.setObjectName("label_status")
@@ -103,6 +103,12 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setTabOrder(self.button_start, self.input_name)
+        MainWindow.setTabOrder(self.input_name, self.input_email)
+        MainWindow.setTabOrder(self.input_email, self.input_phone)
+        MainWindow.setTabOrder(self.input_phone, self.combo_ticket)
+        MainWindow.setTabOrder(self.combo_ticket, self.input_code)
+        MainWindow.setTabOrder(self.input_code, self.button_submit)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

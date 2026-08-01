@@ -176,10 +176,15 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.label_status.setText("Please enter a valid email address.")
             return
         
-        # 4. Validates phone number input (digits only)
-        if not phone.isdigit() or len(phone) != 10:
+        # 4. Validates phone number input (digits only and length = 10)
+        if not phone.isdigit():
             self.label_status.setStyleSheet("color: red")
-            self.label_status.setText("Phone number must contain numbers only!")
+            self.label_status.setText("Please enter a valid phone number.")
+            return
+
+        if len(phone) != 10:
+            self.label_status.setStyleSheet("color: red")
+            self.label_status.setText("Please enter a valid phone number.")
             return
 
         # 5. Validates ticket selection choice
@@ -197,6 +202,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         if ticket == "Speaker" and code != "SPEAKER2026":
             self.label_status.setStyleSheet("color: red")
             self.label_status.setText("Invalid Speaker Passcode!")
+            return
 
         # 7. Check for duplicate phone number entries
         if self.saved_phones(phone):

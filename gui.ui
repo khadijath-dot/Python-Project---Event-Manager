@@ -247,15 +247,15 @@
        <widget class="QLabel" name="label_status">
         <property name="geometry">
          <rect>
-          <x>210</x>
+          <x>160</x>
           <y>300</y>
-          <width>241</width>
+          <width>281</width>
           <height>41</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>11</pointsize>
+          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="text">
@@ -279,6 +279,15 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>button_start</tabstop>
+  <tabstop>input_name</tabstop>
+  <tabstop>input_email</tabstop>
+  <tabstop>input_phone</tabstop>
+  <tabstop>combo_ticket</tabstop>
+  <tabstop>input_code</tabstop>
+  <tabstop>button_submit</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
